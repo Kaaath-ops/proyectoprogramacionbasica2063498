@@ -117,9 +117,6 @@ void Alta()
         printf("Ingrese la consola: ");
         getline(cin, TIENDA[i].consola);
 
-        printf("Ingrese fecha de lanzamiento del videojuego: ");
-        scanf_s("%d", &TIENDA[i].anio_lanzamiento);
-
         do
         {
             printf("Ingrese fecha de lanzamiento del videojuego: ");
