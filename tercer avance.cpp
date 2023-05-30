@@ -120,6 +120,22 @@ void Alta()
         printf("Ingrese fecha de lanzamiento del videojuego: ");
         scanf_s("%d", &TIENDA[i].anio_lanzamiento);
 
+        do
+        {
+            printf("Ingrese fecha de lanzamiento del videojuego: ");
+            scanf_s("%d", &TIENDA[i].anio_lanzamiento);
+
+            if (TIENDA[i].anio_lanzamiento < 1960 || TIENDA[i].anio_lanzamiento > 2023)
+            {
+                printf("Fecha de lanzamiento invalida. La fecha debe estar entre 1960 y 2023.\n");
+                while (getchar() != '\n'); // Vaciar el búfer
+            }
+            else
+            {
+                break; // Salir del bucle si la fecha es válida
+            }
+        } while (true);
+
         printf("Ingrese el precio: ");
         scanf_s("%f", &TIENDA[i].precio);
         while (getchar() != '\n'); // Vaciar el búfer
@@ -131,30 +147,148 @@ void Alta()
     }
 }
 
+
 void Listas()
 {
     printf("\n*** Lista de Articulos ***\n\n");
 
-    for (int i = 0; i < alta; i++)
+    int opcion;
+    printf("Desea ver los articulos filtrados por alguna opcion?\n");
+    printf("1. Si\n");
+    printf("2. No\n");
+    scanf_s("%d", &opcion);
+
+    if (opcion == 1)
     {
-        if (TIENDA[i].status == "ELIMINADO")
+        int filtro_opcion;
+        printf("\nSeleccione el filtro:\n");
+        printf("1. Consola\n");
+        printf("2. Genero\n");
+        printf("3. Clasificacion\n");
+        scanf_s("%d", &filtro_opcion);
+
+        string filtro;
+        switch (filtro_opcion)
         {
-            printf("REGISTRO ELIMINADO %d\n", i + 1);
+        case 1:
+            printf("\nIngrese la consola para filtrar: ");
+            while (getchar() != '\n'); // Vaciar el búfer
+            getline(cin, filtro);
+            break;
+
+        case 2:
+            printf("\nIngrese el genero para filtrar: ");
+            while (getchar() != '\n'); // Vaciar el búfer
+            getline(cin, filtro);
+            break;
+
+        case 3:
+            printf("\nIngrese la clasificacion para filtrar: ");
+            while (getchar() != '\n'); // Vaciar el búfer
+            getline(cin, filtro);
+            break;
+
+        default:
+            printf("Opcion de filtro invalida.\n");
+            return;
         }
-        else
+
+        printf("\n*** Articulos Filtrados por ");
+        switch (filtro_opcion)
         {
-            printf("Articulo: %s\n", TIENDA[i].articulo.c_str());
-            printf("Descripcion: %s\n", TIENDA[i].descripcion.c_str());
-            printf("Cantidad de articulos disponibles: %d\n", TIENDA[i].num_articulos_disponibles);
-            printf("Genero: %s\n", TIENDA[i].genero.c_str());
-            printf("Clasificacion: %s\n", TIENDA[i].clasificacion.c_str());
-            printf("Consola: %s\n", TIENDA[i].consola.c_str());
-            printf("Fecha de lanzamiento: %d\n", TIENDA[i].anio_lanzamiento);
-            printf("Precio: %.2f\n", TIENDA[i].precio);
-            printf("Total: %.2f\n", TIENDA[i].total);
+        case 1:
+            printf("Consola: %s ***\n\n", filtro.c_str());
+            break;
+
+        case 2:
+            printf("Genero: %s ***\n\n", filtro.c_str());
+            break;
+
+        case 3:
+            printf("Clasificacion: %s ***\n\n", filtro.c_str());
+            break;
+        }
+
+        bool encontrado = false;
+        for (int i = 0; i < alta; i++)
+        {
+            if (TIENDA[i].status == "ELIMINADO")
+            {
+                continue;
+            }
+
+            switch (filtro_opcion)
+            {
+            case 1:
+                if (TIENDA[i].consola == filtro)
+                {
+                    encontrado = true;
+                }
+                break;
+
+            case 2:
+                if (TIENDA[i].genero == filtro)
+                {
+                    encontrado = true;
+                }
+                break;
+
+            case 3:
+                if (TIENDA[i].clasificacion == filtro)
+                {
+                    encontrado = true;
+                }
+                break;
+            }
+
+            if (encontrado)
+            {
+                printf("Articulo: %s\n", TIENDA[i].articulo.c_str());
+                printf("Descripcion: %s\n", TIENDA[i].descripcion.c_str());
+                printf("Cantidad de articulos disponibles: %d\n", TIENDA[i].num_articulos_disponibles);
+                printf("Genero: %s\n", TIENDA[i].genero.c_str());
+                printf("Clasificacion: %s\n", TIENDA[i].clasificacion.c_str());
+                printf("Consola: %s\n", TIENDA[i].consola.c_str());
+                printf("Fecha de lanzamiento: %d\n", TIENDA[i].anio_lanzamiento);
+                printf("Precio: %.2f\n", TIENDA[i].precio);
+                printf("Total: %.2f\n\n", TIENDA[i].total);
+            }
+
+            encontrado = false;
+        }
+
+        
+    }
+    else if (opcion == 2)
+    {
+        printf("\n*** Todos los Articulos ***\n\n");
+
+        for (int i = 0; i < alta; i++)
+        {
+            if (TIENDA[i].status == "ELIMINADO")
+            {
+                printf("REGISTRO ELIMINADO %d\n", i + 1);
+            }
+            else
+            {
+                printf("Articulo: %s\n", TIENDA[i].articulo.c_str());
+                printf("Descripcion: %s\n", TIENDA[i].descripcion.c_str());
+                printf("Cantidad de articulos disponibles: %d\n", TIENDA[i].num_articulos_disponibles);
+                printf("Genero: %s\n", TIENDA[i].genero.c_str());
+                printf("Clasificacion: %s\n", TIENDA[i].clasificacion.c_str());
+                printf("Consola: %s\n", TIENDA[i].consola.c_str());
+                printf("Fecha de lanzamiento: %d\n", TIENDA[i].anio_lanzamiento);
+                printf("Precio: %.2f\n", TIENDA[i].precio);
+                printf("Total: %.2f\n\n", TIENDA[i].total);
+            }
         }
     }
+    else
+    {
+        printf("Opcion invalida. No se mostrarán los articulos filtrados.\n");
+    }
 }
+
 
 void eliminar()
 {
@@ -274,6 +408,23 @@ void Modificacion()
     case 8:
         printf("Ingrese el fecha de lanzamiento: ");
         scanf_s("%d", &TIENDA[j].anio_lanzamiento);
+        // Validación de fecha de lanzamiento
+        do
+        {
+            printf("Ingrese fecha de lanzamiento del videojuego: ");
+            scanf_s("%d", &TIENDA[j].anio_lanzamiento);
+
+            if (TIENDA[j].anio_lanzamiento < 1960 || TIENDA[j].anio_lanzamiento > 2023)
+            {
+                printf("Fecha de lanzamiento invalida. La fecha debe estar entre 1960 y 2023.\n");
+                while (getchar() != '\n'); // Vaciar el búfer
+            }
+            else
+            {
+                break; // Salir del bucle si la fecha es válida
+            }
+        } while (true);
+
         break;
 
     default:
